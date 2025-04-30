@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       filename:
-        description: 'file to build EXE from (e.g script.py)'
+        description: 'name of .py file to build EXE from (e.g script)'
         required: true
-        default: 'script.py'
+        default: 'script'
 
 jobs:
   build:
@@ -29,10 +29,10 @@ jobs:
 
     - name: Build EXE
       run: |
-        pyinstaller --onefile --add-binary "chromedriver.exe;." ${{ github.event.inputs.filename }}
+        pyinstaller --onefile --add-binary "chromedriver.exe;." ${{ github.event.inputs.filename }}.py
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: analysis
-        path: dist/output.exe
+        name: ${{ github.event.inputs.filename }}
+        path: dist/${{ github.event.inputs.filename }}.exe
