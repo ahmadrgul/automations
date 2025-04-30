@@ -1,22 +1,23 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import os
+import sys
 import time
 import random
 
 username = input("username: ")
 password = input("password: ")
 
-driver_path = '/usr/bin/chromedriver'
+def resource_path(relative_path):
+    return os.path.join(getattr(sys, '_MEIPASS', os.path.abspath(".")), relative_path)
 
-options = Options()
+driver_path = resource_path("chromedriver.exe")
 
 driver = webdriver.Chrome(
     service=Service(driver_path),
-    options=options
 )
 
 wait = WebDriverWait(driver, 20)

@@ -14,16 +14,24 @@ def are_downloads_completed(download_dir):
             break
         time.sleep(1)
 
+def resource_path(relative_path):
+    return os.path.join(getattr(sys, '_MEIPASS', os.path.abspath(".")), relative_path)
+
 analysis_number = int(input("Latest Analysis Number: "))
 number_of_analysis = int(input("Number of Analysis to Download: "))
 
+download_path = os.path.join(os.environ["USERPROFILE"], "Downloads", "analysis")
+os.makedirs(download_path, exist_ok=True)
+
+driver_path = resource_path("chromedriver.exe")
+
 options = Options()
 options.add_experimental_option("prefs", {
-    'download.default_directory': os.path.expanduser('~/analysis'),
+    'download.default_directory': download_path,
     'download.prompt_for_download': False,
 })
 
-driver = webdriver.Chrome(service=Service('usr/bin/chromedriver'), options=options)
+driver = webdriver.Chrome(service=Service(driver_path), options=options)
 wait = WebDriverWait(driver, 20)
 number_of_downloads = 0
 
@@ -42,5 +50,5 @@ while number_of_downloads < number_of_analysis:
 
     analysis_number -= 1
 
-if are_downloads_completed(os.path.expanduser('~/analysis')):
+if are_downloads_completed(download_path):
     driver.quit()
