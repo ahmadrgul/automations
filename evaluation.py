@@ -42,23 +42,17 @@ while i < 8:
         surveys[i].click()
     except:
         pass
+        
+    buttons = wait.until(EC.presence_of_all_elements_located((By.XPATH, f"//input[contains(@value,' _e_teacher')]")))
+    buttons += wait.until(EC.presence_of_all_elements_located((By.XPATH, f"//input[contains(@value,'_e_teacher')]")))
 
-    n = 96
-    while n < 117:
-        buttons = wait.until(EC.presence_of_all_elements_located((By.XPATH, f"//input[contains(@value, {n}) and contains(@value, 'teacher')]")))
-        choice = random.randint(0, 4)
-        buttons[choice].click()
-        n += 1
-
-    n = 117
-    while n < 144:
-        buttons = wait.until(EC.presence_of_all_elements_located((By.XPATH, f"//input[contains(@value, {n}) and contains(@value, 'course')]")))
-        choice = random.randint(0, 4)
-        buttons[choice].click()
-        n += 1
+    for button in buttons:
+        wait.until(EC.element_to_be_clickable(button))
+        button.click()
 
     submit_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))) 
     time.sleep(2)
-    submit_button.click()   
+    submit_button.click()
+    i += 1
 
 driver.quit()
