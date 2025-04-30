@@ -43,8 +43,8 @@ while i < 8:
     except:
         pass
         
-    buttons = wait.until(EC.presence_of_all_elements_located((By.XPATH, f"//input[contains(@value,' _e_teacher')]")))
-    buttons += wait.until(EC.presence_of_all_elements_located((By.XPATH, f"//input[contains(@value,'_e_teacher')]")))
+    buttons = wait.until(EC.presence_of_all_elements_located((By.XPATH, f"//input[contains(@value, '_e_teacher')]")))
+    buttons += wait.until(EC.presence_of_all_elements_located((By.XPATH, f"//input[contains(@value, '_e_teacher')]")))
 
     for button in buttons:
         wait.until(EC.element_to_be_clickable(button))
