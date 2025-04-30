@@ -1,0 +1,38 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch:
+    inputs:
+      filename:
+        description: 'file to build EXE from (e.g script.py)'
+        required: true
+        default: 'script.py'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pyinstaller
+
+    - name: Build EXE
+      run: |
+        pyinstaller --onefile --add-binary "chromedriver.exe;." ${{ github.event.inputs.filename }}
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: analysis
+        path: dist/output.exe
