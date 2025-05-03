@@ -23,7 +23,7 @@ options.add_experimental_option("prefs", {
     'download.prompt_for_download': False,
 })
 
-driver = webdriver.Chrome(service=Service('usr/bin/chromedriver'), options=options)
+driver = webdriver.Chrome(service=Service('/usr/bin/chromedriver'), options=options)
 wait = WebDriverWait(driver, 20)
 number_of_downloads = 0
 
@@ -37,7 +37,9 @@ while number_of_downloads < number_of_analysis:
             wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@type="submit" and contains(@class, "btn") and contains(@class, "btn-primary")]')))
             button.click()
         except:
+            analysis_number -= 1
             continue
+
         number_of_downloads += 1
 
     analysis_number -= 1
