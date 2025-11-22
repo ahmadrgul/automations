@@ -4,7 +4,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import time
 import random
 
 username = input("username: ")
@@ -35,10 +34,10 @@ surveys = wait.until(EC.presence_of_all_elements_located((By.XPATH, "//a[contain
 
 i = 0 
 
-while i < 8:
+while i < len(surveys):
     try:
         surveys = wait.until(EC.presence_of_all_elements_located((By.XPATH, "//a[contains(@href, 'evaluation/create')]")))
-        surveys[i].click()
+        driver.execute_script("arguments[0].click();", surveys[i])
     except:
         pass
 
@@ -46,18 +45,19 @@ while i < 8:
     while n < 117:
         buttons = wait.until(EC.presence_of_all_elements_located((By.XPATH, f"//input[contains(@value, {n}) and contains(@value, 'teacher')]")))
         choice = random.randint(0, 4)
-        buttons[choice].click()
+        # buttons[choice].click() replaced with JavaScript click to avoid interception issues
+        driver.execute_script("arguments[0].click();", buttons[choice])
         n += 1
 
     n = 117
     while n < 144:
         buttons = wait.until(EC.presence_of_all_elements_located((By.XPATH, f"//input[contains(@value, {n}) and contains(@value, 'course')]")))
         choice = random.randint(0, 4)
-        buttons[choice].click()
+        # buttons[choice].click() replaced with JavaScript click to avoid interception issues
+        driver.execute_script("arguments[0].click();", buttons[choice])
         n += 1
 
-    submit_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']"))) 
-    time.sleep(2)
-    submit_button.click()   
+    submit_button = wait.until(EC.element_to_be_clickable((By.XPATH, "//button[@type='submit']")))
+    driver.execute_script("arguments[0].click();", submit_button)
 
 driver.quit()
